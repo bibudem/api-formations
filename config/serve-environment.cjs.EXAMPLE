@@ -21,6 +21,6 @@ module.exports = {
 	},
 
 	httpClient: {
-		proxy: 'http://proxy.company.com:80'
+		proxy: 'proxy.company.com:80'
 	},
 }

@@ -7,8 +7,8 @@ import compression from 'compression'
 import config from 'config'
 import cors from 'cors'
 import noFavicon from 'express-no-favicons'
-import webconsole from '@remillc/web-console'
-import { dev as devconsole } from 'consoles'
+import webLogger from '@remillc/web-logger'
+import { dev as devLogger } from 'loggers'
 
 import formationsRouter from './routes/formations.route.js'
 import listeRouter from './routes/liste.route.js'
@@ -45,10 +45,10 @@ app.use(compression())
 app.use(helmet());
 
 if (process.env.NODE_ENV !== 'production') {
-	app.use(devconsole);
+	app.use(devLogger);
 }
 
-app.use(webconsole({
+app.use(webLogger({
 	logDirectory: join(__dirname, '..', config.get('app.logDir'))
 }));
 
