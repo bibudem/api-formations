@@ -7,14 +7,14 @@ import compression from 'compression'
 import config from 'config'
 import cors from 'cors'
 import noFavicon from 'express-no-favicons'
-import webLogger from '@remillc/web-logger'
-import { dev as devLogger } from 'loggers'
+import webconsole from '@remillc/web-console'
+import { dev as devconsole } from 'consoles'
 
 import formationsRouter from './routes/formations.route.js'
 import listeRouter from './routes/liste.route.js'
 import aProposRouter from './routes/a-propos.route.js'
 import errorHandler from './middlewares/error-handler.js'
-import logger from './lib/console.js'
+import console from './lib/console.js'
 
 const app = express();
 
@@ -45,10 +45,10 @@ app.use(compression())
 app.use(helmet());
 
 if (process.env.NODE_ENV !== 'production') {
-	app.use(devLogger);
+	app.use(devconsole);
 }
 
-app.use(webLogger({
+app.use(webconsole({
 	logDirectory: join(__dirname, '..', config.get('app.logDir'))
 }));
 
@@ -90,6 +90,6 @@ app.use(errorHandler);
 
 app.listen(config.get('app.port'));
 
-logger.info('Server running at http://localhost:' + config.get('app.port') + '/ in ' + process.env.NODE_ENV + ' mode (node ' + process.version + ')');
+console.info('Server running at http://localhost:' + config.get('app.port') + '/ in ' + process.env.NODE_ENV + ' mode (node ' + process.version + ')');
 
 export default app;

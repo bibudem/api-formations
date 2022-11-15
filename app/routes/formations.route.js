@@ -2,7 +2,7 @@ import { Router } from 'express'
 import Boom from '@hapi/boom'
 import config from 'config'
 import EventService from '../lib/event-service.js'
-import logger from '../lib/console.js'
+import console from '../lib/console.js'
 
 const formationsRouter = new Router();
 
@@ -18,14 +18,14 @@ formationsRouter.param('type', (req, res, next, type) => {
 })
 
 formationsRouter.get('/:type/:id', async (req, res, next) => {
-  logger.debug(req.params)
+  console.debug(req.params)
   // const type = req.params.type === 'discipline' ? 'category' : 'campus';
   // const id = EventService.translateLibCalIdToApi(type, req.params.id);
 
   const type = req.params.type;
   const id = req.params.id;
   const uid = `${type}:${id}`
-  logger.log(uid)
+  console.log(uid)
 
   if (id) {
     return eventService
