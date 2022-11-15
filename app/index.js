@@ -3,6 +3,7 @@ import { fileURLToPath } from 'node:url'
 import express from 'express'
 import nodeGlobalProxy from 'node-global-proxy'
 import helmet from 'helmet'
+import compression from 'compression'
 import config from 'config'
 import cors from 'cors'
 import noFavicon from 'express-no-favicons'
@@ -38,8 +39,9 @@ app.disable("x-powered-by");
  * Middlewares
  */
 
-// Protect requests against well-known web vulnerabilities
+app.use(compression())
 
+// Protect requests against well-known web vulnerabilities
 app.use(helmet());
 
 if (process.env.NODE_ENV !== 'production') {
