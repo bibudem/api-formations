@@ -1,2 +1,221 @@
-# api-formations
+## api-formations
+
 API REST des activités de formations la Direction des bibliothèques, Université de Montréal
+
+## Installation de l'application
+
+1.  Régler la variable d'environnement `NODE_ENV` à `production` ou ou `development`
+2.  Utiliser la version de node v16.17.0 ou supérieure
+3.  Exécuter la commande `npm install`
+
+## Exécution
+
+1.  Exécuter la commande `node index.js`
+
+## API
+
+Documentation sur l'api:
+
+[https://api.bib.umontreal.ca/formations/lisez-moi.txt](https://api.bib.umontreal.ca/formations/lisez-moi.txt)
+
+`/`
+
+Toutes les formations: retourne toutes les formations à partir de la date d'aujourd'hui.
+
+`/liste/disciplines`
+
+Retournera la liste de toutes les disciplines sous forme d'un objet JSON.
+
+```javascript
+{
+  "keys": [
+    {
+      "key": "amenagement",
+      "label": "Aménagement"
+    },
+    {
+      "key": "anthropologie-demographie-sociologie",
+      "label": "Anthropologie, démographie, sociologie"
+    },
+    {
+      "key": "art-cinema-musique",
+      "label": "Art, cinéma, musique"
+    },
+    {
+      "key": "communication-sciences-information",
+      "label": "Communication, sciences de l'information"
+    },
+    {
+      "key": "criminologie-psychologie-travail-social",
+      "label": "Criminologie, psychologie, travail social"
+    },
+    {
+      "key": "droit",
+      "label": "Droit"
+    },
+    {
+      "key": "economie-politique-relations-industrielles",
+      "label": "Économie, politique, relations industrielles"
+    },
+    {
+      "key": "education-psychoeducation",
+      "label": "Éducation, psychoéducation"
+    },
+    {
+      "key": "etudes-religieuses-histoire-philosophie",
+      "label": "Études religieuses, histoire, philosophie"
+    },
+    {
+      "key": "informatique-mathematique-sciences-nature",
+      "label": "Informatique, mathématiques, sciences de la nature"
+    },
+    {
+      "key": "langues-litteratures",
+      "label": "Langues et littératures"
+    },
+    {
+      "key": "sciences-sante",
+      "label": "Sciences de la santé"
+    }
+  ]
+}
+```
+
+`/liste/bibs`
+
+Retournera la liste de toutes les bibliothèques sous forme d'un objet JSON.
+
+```javascript
+{
+    "am": {
+        "long": "Bibliothèque d'aménagement",
+        "court": "Aménagement",
+        "url": "amenagement"
+    },
+    "antenne-paramedicale": {
+        "long": "Antenne paramédicale - 7077 avenue du Parc",
+        "court": "7077 avenue du Parc",
+        "url": "7077"
+    },
+    "cartotheque": {
+        "long": "Cartothèque",
+        "court": "Cartothèque",
+        "url": "carthotheque"
+    },
+    "ch": {
+        "long": "Bibliothèque de chimie",
+        "court": "Chimie",
+        "url": "chimie"
+    },
+    "conservation": {
+        "long": "Centre de conservation",
+        "court": "Centre de conservation",
+        "url": "centre-conservation"
+    },
+    "cs": {
+        "long": "Bibliothèque des livres rares et collections spéciales",
+        "court": "Livres rares et collections spéciales",
+        "url": ""
+    },
+    "dr": {
+        "long": "Bibliothèque de droit",
+        "court": "Droit",
+        "url": "droit"
+    },
+    "ed": {
+        "long": "Bibliothèque ÉPC-Biologie",
+        "court": "ÉPC-Biologie",
+        "url": "epc-biologie"
+    },
+    "gp": {
+        "long": "Bibliothèque de géographie",
+        "court": "Géographie",
+        "url": "geographie"
+    },
+    "ki": {
+        "long": "Bibliothèque de kinésiologie",
+        "court": "Kinésiologie",
+        "url": "kinesiologie"
+    },
+    "laval": {
+        "long": "Campus de Laval",
+        "court": "Laval",
+        "url": "laval"
+    },
+    "mi": {
+        "long": "Bibliothèque de mathématiques et informatique",
+        "court": "Math / Info",
+        "url": "mathematiques-informatique"
+    },
+    "mu": {
+        "long": "Bibliothèque de musique",
+        "court": "Musique",
+        "url": "musique"
+    },
+    "mv": {
+        "long": "Bibliothèque de médecine vétérinaire",
+        "court": "Médecine vétérinaire",
+        "url": "medecine-veterinaire"
+    },
+    "pa": {
+        "long": "Bibliothèque paramédicale",
+        "court": "Paramédicale",
+        "url": "paramedicale"
+    },
+    "pb": {
+        "long": "Service du prêt entre bibliothèques",
+        "court": "PEB",
+        "url": ""
+    },
+    "py": {
+        "long": "Bibliothèque de physique",
+        "court": "Physique",
+        "url": "physique"
+    },
+    "sa": {
+        "long": "Bibliothèque de la santé",
+        "court": "Santé",
+        "url": "sante"
+    },
+    "ss": {
+        "long": "Bibliothèque des lettres et sciences humaines",
+        "court": "Lettres et sciences humaines",
+        "url": "lettres-sciences-humaines"
+    },
+    "youville": {
+        "long": "Dépôt Youville",
+        "court": "Youville",
+        "url": ""
+    }
+}
+```
+
+`/bib/:code-bibliotheque`
+
+Formations par bibliothèque: retourne toutes les formations à partir de la date d'aujourd'hui pour la bibliothèque indiquée dans l'url
+
+Par exemple, la liste de toutes les formations de la bibliothèque de lettres et de sciences humaines:
+
+[https://api.bib.umontreal.ca/formations/bib/ss](https://api.bib.umontreal.ca/formations/bib/ss)
+
+`/discipline/:code-discipline`
+
+Formations par discipline. Retourne toutes les formations à partir de la date d'aujourd'hui pour la discipline indiquée dans l'url. Par exemple:
+
+[https://api.bib.umontreal.ca/formations/discipline/amenagement](https://api.bib.umontreal.ca/formations/discipline/amenagement)
+
+La réponse est une liste json avec les informations de base sur une formation:
+
+```javascript
+[
+  {
+    "url": "https://bib.umontreal.ca/formations/formation?no=8686",
+    "titre": "test formation discipline amenagement",
+    "date": "17 juil. 2018",
+    "debut": "15:00",
+    "fin": "16:00",
+    "lieu": "Bibliothèque de musique",
+    "disciplines": "amenagement"
+  }
+]
+```

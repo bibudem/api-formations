@@ -1,0 +1,26 @@
+module.exports = {
+	app: {
+		host: 'localhost',
+		port: process.env.API_PORT || 123,
+		mountPath: '/formations',
+		baseUrl: 'https://api.company.com/formations/'
+	},
+
+	libCalApi: {
+		serviceUrl: 'https://libcal.your.library.com/1.1/events',
+		oAuth2: {
+			host: 'https://your-library.libcal.com:443',
+			path: '/1.1/oauth/token',
+		},
+		key: {
+			clientId: '123',
+			clientSecret: ''
+		},
+		responseCacheTtl: 60 * 1000,
+		calendarId: '456'
+	},
+
+	httpClient: {
+		proxy: 'proxy.company.com:80'
+	},
+}
