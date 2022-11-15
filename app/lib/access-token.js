@@ -46,11 +46,6 @@ export class AccessToken {
         client_id: this.clientId,
         client_secret: this.clientSecret
       }, {
-        // params: {
-        //   grant_type: grantType,
-        //   client_id: this.clientId,
-        //   client_secret: this.clientSecret
-        // },
         timeout: this.httpClientTimeout,
         proxy: false
       })
@@ -74,9 +69,6 @@ export class AccessToken {
           throw data
         })
         .catch(axiosError => {
-          console.log(axiosError.request.protocol)
-          console.log(axiosError.request.host)
-          console.log(axiosError.request.path)
           let error
           if (axiosError.response) {
             error = new Boom(axiosError.response.data.error_description, {
