@@ -22,7 +22,6 @@
 	"dependencies": {
 		"@hapi/boom": "^10.0.0",
 		"@remillc/web-logger": "^0.1.0",
-		"auth-header": "^1.0.0",
 		"axios": "^1.1.3",
 		"camel-case": "^4.1.2",
 		"code-bib": "github:bibudem/code-bib",
@@ -31,15 +30,11 @@
 		"cors": "^2.8.5",
 		"express": "^4.18.2",
 		"express-no-favicons": "0.0.1",
-		"form-urlencoded": "^6.1.0",
 		"helmet": "^6.0.0",
 		"loggers": "github:remillc/loggers",
-		"moment": "^2.29.4",
-		"node-cache": "^5.1.2",
 		"node-global-proxy": "^1.0.1",
 		"tracer": "^1.1.6",
-		"ttl": "^1.3.1",
-		"tunnel": "0.0.6"
+		"ttl": "^1.3.1"
 	},
 	"devDependencies": {
 		"eslint": "^8.27.0",
