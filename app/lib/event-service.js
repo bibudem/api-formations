@@ -13,11 +13,11 @@ moment.locale('fr-ca')
 
 const categoryMapping = new Map();
 
-Object.keys(categories).forEach(category => {
-  Object.keys(categories[category]).forEach((item) => {
+for (const category of Object.keys(categories)) {
+  for (const item of Object.keys(categories[category])) {
     categoryMapping.set(id(category, categories[category][item]), item)
-  })
-})
+  }
+}
 
 function id(a, b) {
   return `${a}:${b}`;
@@ -44,25 +44,25 @@ export default class EventService {
 
     return events.map(event => {
 
-      const ret = {
+      const returnValue = {
         url: `https://bib.umontreal.ca/formations?no=${event.id}`,
         titre: event.title,
         date: moment(event.start).format('D MMM YYYY'),
         debut: moment(event.start).format('H:mm'),
         fin: moment(event.end).format('H:mm'),
-        disciplines: event.category.map(cat => categories.discipline[cat.id]).join(',')
+        disciplines: event.category.map(cat => categories.discipline[cat.id]).join(','),
       }
 
       if (typeof event.campus.id !== 'undefined') {
         try {
-          ret.lieu = bibLabelFromLibCalCampusId(`${event.campus.id}`)
-        } catch (e) {
+          returnValue.lieu = bibLabelFromLibCalCampusId(`${event.campus.id}`)
+        } catch {
           console.error(`Can't find the campus id = ${event.campus.id} (${event.campus.name})`)
           console.trace(event)
         }
       }
 
-      return ret;
+      return returnValue;
     })
   }
 
@@ -73,7 +73,7 @@ export default class EventService {
 
     return {
       'discipline': 'category',
-      'bib': 'campus'
+      'bib': 'campus',
     }[name]
   }
 
@@ -95,14 +95,14 @@ export default class EventService {
     this.serviceUrl = serviceUrl.href
 
     this._cache = new Cache({
-      ttl: config.get('libCalApi.responseCacheTtl')
+      ttl: config.get('libCalApi.responseCacheTtl'),
     })
 
     this._accessToken = new AccessToken({
       host: config.get('libCalApi.oAuth2.host'),
       path: config.get('libCalApi.oAuth2.path'),
       clientId: config.get('libCalApi.key.clientId'),
-      clientSecret: config.get('libCalApi.key.clientSecret')
+      clientSecret: config.get('libCalApi.key.clientSecret'),
     });
   }
 
@@ -124,8 +124,8 @@ export default class EventService {
 
     try {
       bearerToken = await this._accessToken.requestToken()
-    } catch (e) {
-      throw e
+    } catch (error) {
+      throw error
     }
 
     const resultPromise = new Promise((resolve, reject) => {
@@ -134,22 +134,22 @@ export default class EventService {
 
       axios(url.href, {
         headers: {
-          Authorization: `Bearer ${bearerToken.accessToken}`
+          Authorization: `Bearer ${bearerToken.accessToken}`,
         },
-        proxy: false
-      },)
+        proxy: false,
+      })
         .then(response => response.data)
         .then(data => {
-          console.log(inspect(data, { depth: 4, colors: true }))
+          // console.log(inspect(data, { depth: 4, colors: true }))
           try {
             resolve(EventService.translateLibCalDataToApi(data.events))
-          } catch (e) {
-            reject(e)
+          } catch (error) {
+            reject(error)
           }
         })
-        .catch(e => {
+        .catch(error => {
           // console.error(e)
-          reject(e)
+          reject(error)
         })
     })
 

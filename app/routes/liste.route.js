@@ -8,14 +8,14 @@ const router = Router()
  * Routes
  */
 
-router.get('/disciplines', function (req, res, next) {
+router.get('/disciplines', function (request, response, next) {
 	// Retourne la liste des types de services
-	res.send(config.get('champsDisciplinaires'));
+	response.send(config.get('champsDisciplinaires'));
 });
 
-router.get('/bibs', function (req, res, next) {
+router.get('/bibs', function (request, response, next) {
 	// Retourne la liste des types de services
-	res.send(config.get('bibs'));
+	response.send(config.get('bibs'));
 });
 
 

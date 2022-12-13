@@ -3,7 +3,7 @@ module.exports = {
 		host: 'localhost',
 		port: process.env.API_PORT || 123,
 		mountPath: '/formations',
-		baseUrl: 'https://api.company.com/formations/'
+		baseUrl: 'https://api.company.com/formations/',
 	},
 
 	libCalApi: {
@@ -14,13 +14,13 @@ module.exports = {
 		},
 		key: {
 			clientId: '123',
-			clientSecret: ''
+			clientSecret: '',
 		},
 		responseCacheTtl: 60 * 1000,
-		calendarId: '456'
+		calendarId: '456',
 	},
 
 	httpClient: {
-		proxy: 'http://proxy.company.com:80'
+		proxy: 'http://proxy.company.com:80',
 	},
 }

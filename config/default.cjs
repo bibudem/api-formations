@@ -8,7 +8,7 @@ module.exports = {
 		cors: {
 			origin: ['*'],
 		},
-		mountPath: ''
+		mountPath: '',
 	},
 
 	champsDisciplinaires: codeChampsDisciplinaires,
@@ -20,15 +20,15 @@ module.exports = {
 	allowedFormats: {
 		json: {
 			ext: ['', '.json'],
-			mime: 'application/json'
+			mime: 'application/json',
 		},
 		ics: {
 			ext: ['.ics', '.ical', '.ifb', '.icalendar'],
-			mime: 'text/calendar'
-		}
+			mime: 'text/calendar',
+		},
 	},
 
 	useCache: true,
 
-	libCalAPIBaseUrl: 'https://umontreal.libcal.com/1.1'
+	libCalAPIBaseUrl: 'https://umontreal.libcal.com/1.1',
 }

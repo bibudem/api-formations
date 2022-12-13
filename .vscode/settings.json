@@ -1,0 +1,18 @@
+{
+  "eslint.format.enable": true,
+  "eslint.useESLintClass": true,
+  "eslint.run": "onType",
+  "eslint.packageManager": "npm",
+  "eslint.lintTask.enable": true,
+  "eslint.enable": true,
+  "[typescript]": {
+    "editor.formatOnSave": true,
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "eslint.validate": [
+    "javascript"
+  ],
+  "editor.codeActionsOnSave": {
+    "source.fixAll": true
+  },
+}

@@ -13,7 +13,7 @@ export class AccessToken {
     clientSecret,
     host,
     path,
-    httpClientTimeout = 0 // axios default is `0` (no timeout)
+    httpClientTimeout = 0, // axios default is `0` (no timeout)
   } = {}) {
     this.grantType = grantType;
     this.host = host;
@@ -22,11 +22,11 @@ export class AccessToken {
     this.clientSecret = clientSecret;
 
     // Token data
-    this.expiresAt = null;
+    this.expiresAt = undefined;
 
     this.httpClientTimeout = httpClientTimeout;
     this.cache = new Cache({
-      capacity: 1
+      capacity: 1,
     })
   }
 
@@ -44,15 +44,15 @@ export class AccessToken {
       axios.post(url, {
         grant_type: grantType,
         client_id: this.clientId,
-        client_secret: this.clientSecret
+        client_secret: this.clientSecret,
       }, {
         timeout: this.httpClientTimeout,
-        proxy: false
+        proxy: false,
       })
         .then(response => {
 
           const data = {}
-          Object.keys(response.data).forEach(key => data[camelCase(key)] = response.data[key])
+          for (const key of Object.keys(response.data)) data[camelCase(key)] = response.data[key]
 
           if (response.status === 200) {
             // Success
@@ -73,16 +73,16 @@ export class AccessToken {
           if (axiosError.response) {
             error = new Boom(axiosError.response.data.error_description, {
               statusCode: 500,
-              data: axiosError.response.data
+              data: axiosError.response.data,
             })
           } else if (error.request) {
             error = new Boom(axiosError, {
-              statusCode: 500
+              statusCode: 500,
             })
             console.error(error.request)
           } else {
             error = new Boom(axiosError, {
-              statusCode: 500
+              statusCode: 500,
             })
             console.error(error.message)
           }

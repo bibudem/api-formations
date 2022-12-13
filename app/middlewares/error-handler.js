@@ -5,33 +5,33 @@ import console from '../lib/console.js'
  * Error handler
  */
 
-export default function errorHandler(err, req, res, next) {
+export default function errorHandler(error, request, response, next) {
 
-  if (!Boom.isBoom(err)) {
-    if (err instanceof SyntaxError && 'type' in err) {
+  if (!Boom.isBoom(error)) {
+    if (error instanceof SyntaxError && 'type' in error) {
       // Error created from the http-errors module
-      err = new Boom(err, {
-        statusCode: err.statusCode,
-        data: err
+      error = new Boom(error, {
+        statusCode: error.statusCode,
+        data: error,
       });
     } else {
-      return next(err);
+      return next(error);
     }
   }
 
-  if (err.isServer) {
-    console.error(err.stack);
+  if (error.isServer) {
+    console.error(error.stack);
   }
 
-  res.status(err.output.statusCode);
+  response.status(error.output.statusCode);
 
-  if (err.data) {
-    err.output.payload.data = err.data
+  if (error.data) {
+    error.output.payload.data = error.data
   }
 
-  if (req.accepts('json')) {
-    return res.json(err.output.payload);
+  if (request.accepts('json')) {
+    return response.json(error.output.payload);
   }
 
-  res.send(err.output.payload.message);
+  response.send(error.output.payload.message);
 }

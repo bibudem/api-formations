@@ -33,7 +33,7 @@ if (process.env.NODE_ENV !== 'production') {
 	app.set('json spaces', 2);
 }
 
-app.disable("x-powered-by");
+app.disable('x-powered-by');
 
 /*
  * Middlewares
@@ -49,13 +49,13 @@ if (process.env.NODE_ENV !== 'production') {
 }
 
 app.use(webLogger({
-	logDirectory: join(__dirname, '..', config.get('app.logDir'))
+	logDirectory: join(__dirname, '..', config.get('app.logDir')),
 }));
 
 app.use(noFavicon());
 
-app.use((req, res, next) => {
-	if (typeof req.query.pretty !== 'undefined') {
+app.use((request, response, next) => {
+	if (typeof request.query.pretty !== 'undefined') {
 		// pretty print pour json
 		app.set('json spaces', 2);
 	} else {
@@ -70,8 +70,8 @@ app.use((req, res, next) => {
 
 app.use(['/a-propos', '/about'], aProposRouter);
 
-app.use(['/lisez-moi', '/lisez-moi.txt'], function (req, res) {
-	res.sendFile(join(__dirname, '..', 'lisez-moi.txt'));
+app.use(['/lisez-moi', '/lisez-moi.txt'], function (request, response) {
+	response.sendFile(join(__dirname, '..', 'lisez-moi.txt'));
 });
 
 /*
