@@ -7,11 +7,11 @@ import bibCodes from 'code-bib' assert { type: 'json' }
 import { AccessToken } from './access-token.js'
 import console from './console.js'
 
-const categories = config.get('categoriesMapping');
+const categories = config.get('categoriesMapping')
 
 moment.locale('fr-ca')
 
-const categoryMapping = new Map();
+const categoryMapping = new Map()
 
 for (const category of Object.keys(categories)) {
   for (const item of Object.keys(categories[category])) {
@@ -20,13 +20,13 @@ for (const category of Object.keys(categories)) {
 }
 
 function id(a, b) {
-  return `${a}:${b}`;
+  return `${a}:${b}`
 }
 
 function bibLabelFromLibCalCampusId(id) {
-  const bibCode = categories.bib[id];
+  const bibCode = categories.bib[id]
 
-  return bibCodes[bibCode].long || '';
+  return bibCodes[bibCode].long || ''
 }
 
 export default class EventService {
@@ -45,12 +45,15 @@ export default class EventService {
     return events.map(event => {
 
       const returnValue = {
-        url: `https://bib.umontreal.ca/formations?no=${event.id}`,
+        // url: `https://bib.umontreal.ca/formations?no=${event.id}`,
+        url: event.url.public,
         titre: event.title,
         date: moment(event.start).format('D MMM YYYY'),
         debut: moment(event.start).format('H:mm'),
         fin: moment(event.end).format('H:mm'),
-        disciplines: event.category.map(cat => categories.discipline[cat.id]).join(','),
+        disciplines: event.category.map(cat => categories.discipline[cat.id]).filter(Boolean).join(','),
+        typeLocalisation: 'online_join_url' in event ? 'en-ligne' : 'physique',
+        imageVedette: event.featured_image || null,
       }
 
       if (typeof event.campus.id !== 'undefined') {
@@ -62,7 +65,7 @@ export default class EventService {
         }
       }
 
-      return returnValue;
+      return returnValue
     })
   }
 
@@ -90,7 +93,7 @@ export default class EventService {
 
     this.calendarId = calendarId || config.get('libCalApi.calendarId')
 
-    const serviceUrl = new URL(config.get('libCalApi.serviceUrl'));
+    const serviceUrl = new URL(config.get('libCalApi.serviceUrl'))
     serviceUrl.searchParams.set('cal_id', this.calendarId)
     this.serviceUrl = serviceUrl.href
 
@@ -103,20 +106,11 @@ export default class EventService {
       path: config.get('libCalApi.oAuth2.path'),
       clientId: config.get('libCalApi.key.clientId'),
       clientSecret: config.get('libCalApi.key.clientSecret'),
-    });
+    })
   }
 
-  async getEventsFor(oldType, oldName) {
-
-    if (!['bib', 'discipline'].includes(oldType)) {
-      throw new Error(`Type parameter must be either 'bib' or 'discipline'. Got ${oldType}`)
-    }
-
-    const name = EventService.translateLibCalIdToApi(oldType, oldName)
-    const type = EventService.translateLibCalNameToApi(oldType);
-
-    const id = `${type}:${name}`;
-    let bearerToken;
+  async getEvents(limit = 15, days = 60) {
+    let bearerToken
 
     if (this._cache.get(id)) {
       return this._cache.get(id)
@@ -129,7 +123,63 @@ export default class EventService {
     }
 
     const resultPromise = new Promise((resolve, reject) => {
-      const url = new URL(this.serviceUrl);
+      const url = new URL(this.serviceUrl)
+      url.searchParams.set('limit', limit)
+      url.searchParams.set('days', days)
+
+      axios(url.href, {
+        headers: {
+          Authorization: `Bearer ${bearerToken.accessToken}`,
+        },
+        proxy: false,
+      })
+        .then(response => response.data)
+        .then(data => {
+          console.log(inspect(data, { depth: 4, colors: true }))
+          try {
+            resolve(EventService.translateLibCalDataToApi(data.events))
+          } catch (error) {
+            reject(error)
+          }
+        })
+        .catch(error => {
+          // console.error(e)
+          reject(error)
+        })
+    })
+
+    if (config.get('useCache') && !this._cache.get(id)) {
+      this._cache.put(id, resultPromise)
+    }
+
+    return resultPromise
+
+  }
+
+  async getEventsFor(oldType, oldName) {
+
+    if (!['bib', 'discipline'].includes(oldType)) {
+      throw new Error(`Type parameter must be either 'bib' or 'discipline'. Got ${oldType}`)
+    }
+
+    const name = EventService.translateLibCalIdToApi(oldType, oldName)
+    const type = EventService.translateLibCalNameToApi(oldType)
+
+    const id = `${type}:${name}`
+    let bearerToken
+
+    if (this._cache.get(id)) {
+      return this._cache.get(id)
+    }
+
+    try {
+      bearerToken = await this._accessToken.requestToken()
+    } catch (error) {
+      throw error
+    }
+
+    const resultPromise = new Promise((resolve, reject) => {
+      const url = new URL(this.serviceUrl)
       url.searchParams.set(type, name)
 
       axios(url.href, {
@@ -157,7 +207,7 @@ export default class EventService {
       this._cache.put(id, resultPromise)
     }
 
-    return resultPromise;
+    return resultPromise
 
   }
 }
