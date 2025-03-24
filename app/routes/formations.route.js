@@ -18,9 +18,6 @@ function validateTypeParameter(request, response, next) {
 }
 
 formationsRouter.get('/:type/:id', validateTypeParameter, async (request, response, next) => {
-  console.debug(request.params)
-  // const type = req.params.type === 'discipline' ? 'category' : 'campus';
-  // const id = EventService.translateLibCalIdToApi(type, req.params.id);
 
   const type = request.params.type
   const id = request.params.id
@@ -36,8 +33,9 @@ formationsRouter.get('/:type/:id', validateTypeParameter, async (request, respon
 })
 
 formationsRouter.get('/', async (request, response, next) => {
+  const { limit, days } = request.query
   return eventService
-    .getEvents()
+    .getEvents({ limit, days })
     .then(events => response.send(events))
     .catch(error => next(error))
 })

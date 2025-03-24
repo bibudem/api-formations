@@ -15,12 +15,13 @@ const categoryMapping = new Map()
 
 for (const category of Object.keys(categories)) {
   for (const item of Object.keys(categories[category])) {
-    categoryMapping.set(id(category, categories[category][item]), item)
+    const id = getId(category, categories[category][item])
+    categoryMapping.set(id, item)
   }
 }
 
-function id(a, b) {
-  return `${a}:${b}`
+function getId() {
+  return `${[...arguments].join(':')}`
 }
 
 function bibLabelFromLibCalCampusId(id) {
@@ -81,7 +82,7 @@ export default class EventService {
   }
 
   static translateLibCalIdToApi(type, id) {
-    console.debug(`type: ${type}, id: ${id}`)
+
     if (!['discipline', 'bib'].includes(type)) {
       throw new Error(`Type parameter must be either 'discipline' or 'bib'. Got ${type}`)
     }
@@ -109,8 +110,17 @@ export default class EventService {
     })
   }
 
-  async getEvents(limit = 15, days = 60) {
+  async getEvents({ limit = 15, days = 60 } = {}) {
+    if (limit < 1 || limit > 500) {
+      throw new Error('limit parameter must be >= 1 and <= 500')
+    }
+
+    if (days > 365 || days < 0) {
+      throw new Error(`days parameter must be >= 0 and <= 365. Got ${days}`)
+    }
+
     let bearerToken
+    const id = getId('getEvents', limit, days)
 
     if (this._cache.get(id)) {
       return this._cache.get(id)
@@ -135,7 +145,6 @@ export default class EventService {
       })
         .then(response => response.data)
         .then(data => {
-          console.log(inspect(data, { depth: 4, colors: true }))
           try {
             resolve(EventService.translateLibCalDataToApi(data.events))
           } catch (error) {
@@ -143,7 +152,6 @@ export default class EventService {
           }
         })
         .catch(error => {
-          // console.error(e)
           reject(error)
         })
     })
@@ -165,7 +173,7 @@ export default class EventService {
     const name = EventService.translateLibCalIdToApi(oldType, oldName)
     const type = EventService.translateLibCalNameToApi(oldType)
 
-    const id = `${type}:${name}`
+    const id = getId('getEventsFor', type, name)
     let bearerToken
 
     if (this._cache.get(id)) {
@@ -190,7 +198,6 @@ export default class EventService {
       })
         .then(response => response.data)
         .then(data => {
-          // console.log(inspect(data, { depth: 4, colors: true }))
           try {
             resolve(EventService.translateLibCalDataToApi(data.events))
           } catch (error) {
@@ -198,7 +205,6 @@ export default class EventService {
           }
         })
         .catch(error => {
-          // console.error(e)
           reject(error)
         })
     })
