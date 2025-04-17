@@ -68,6 +68,10 @@ Retournera  la liste de toutes les disciplines  sous forme d'un objet JSON.
       "label": "Études religieuses, histoire, philosophie"
     },
     {
+      "key": "informatique-creation-medias",
+      "label": "Informatique, création et médias",
+	  },
+    {
       "key": "informatique-mathematique-sciences-nature",
       "label": "Informatique, mathématiques, sciences de la nature"
     },

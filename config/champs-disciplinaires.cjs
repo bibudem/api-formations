@@ -27,6 +27,9 @@ module.exports = {
 		key: 'etudes-religieuses-histoire-philosophie',
 		label: 'Études religieuses, histoire, philosophie',
 	}, {
+		key: 'informatique-creation-medias',
+		label: 'Informatique, création et médias',
+	},{
 		key: 'informatique-mathematique-sciences-nature',
 		label: 'Informatique, mathématiques, sciences de la nature',
 	}, {
