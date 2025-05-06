@@ -1,6 +1,6 @@
 {
 	"name": "formations",
-	"version": "2.2.0",
+	"version": "2.3.0",
 	"description": "API rest des activités de formations la Direction des bibliothèques, Université de Montréal",
 	"type": "module",
 	"exports": "./index.js",
