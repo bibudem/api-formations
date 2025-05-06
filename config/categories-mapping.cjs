@@ -9,6 +9,7 @@ module.exports = {
     '34488': 'economie-politique-relations-industrielles',
     '34489': 'education-psychoeducation',
     '34490': 'etudes-religieuses-histoire-philosophie',
+    '34766': 'informatique-creation-medias',
     '34491': 'informatique-mathematique-sciences-nature',
     '34492': 'langues-litteratures',
     '34497': 'multidisciplinaire',
