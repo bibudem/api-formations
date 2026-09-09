@@ -2,7 +2,6 @@ import { Router } from 'express'
 import Boom from '@hapi/boom'
 import config from 'config'
 import EventService from '../lib/event-service.js'
-import console from '../lib/console.js'
 
 const formationsRouter = new Router()
 

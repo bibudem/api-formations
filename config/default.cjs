@@ -1,4 +1,3 @@
-const codeBibs = require('code-bib')
 const codeChampsDisciplinaires = require('./champs-disciplinaires.cjs')
 const categories = require('./categories-mapping.cjs')
 
@@ -12,8 +11,6 @@ module.exports = {
 	},
 
 	champsDisciplinaires: codeChampsDisciplinaires,
-
-	bibs: codeBibs,
 
 	categoriesMapping: categories,
 

@@ -3,9 +3,9 @@ import axios from 'axios'
 import moment from 'moment'
 import Cache from 'ttl'
 import config from 'config'
-import bibCodes from 'code-bib' assert { type: 'json' }
 import { AccessToken } from './access-token.js'
 import console from './console.js'
+import bibCodes from '../../config/code-bib.js'
 
 const categories = config.get('categoriesMapping')
 
